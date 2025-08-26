@@ -73,16 +73,41 @@ df_indexed = df.set_index("Parameter")
 
 styled_df = df_indexed.style.set_table_styles([
     {'selector': 'th',
-     'props': [('color', 'white'),
-               ('background-color', '#0E1117'),
-               ('text-align', 'left')]},
+    'props': [('color', 'white'),
+            ('background-color', '#0E1117'),
+            ('text-align', 'left')]},
     {'selector': 'td',
-     'props': [('text-align', 'right'),
-               ('color', '#FAFAFA'),
-               ('background-color', '#0E1117')]} 
+    'props': [('text-align', 'right'),
+            ('color', '#FAFAFA'),
+            ('background-color', '#0E1117')]} 
 ]).format("{:.2f}")
 
 st.markdown("### Black-Scholes Option Pricing Table")
+st.dataframe(styled_df)
+st.markdown("<br>", unsafe_allow_html=True)
+
+# asdfhalsodfhaslkdjfhaslkdjfh
+greeks = option.calculate_greeks()
+data = {
+    "Greeks": ["Delta", "Gamma", "Vega", "Theta", "Rho"],
+    "Value": greeks
+}
+
+df = pd.DataFrame(data)
+df_indexed = df.set_index("Greeks")
+
+styled_df = df_indexed.style.set_table_styles([
+    {'selector': 'th',
+    'props': [('color', 'white'),
+            ('background-color', '#0E1117'),
+            ('text-align', 'left')]},
+    {'selector': 'td',
+    'props': [('text-align', 'right'),
+            ('color', '#FAFAFA'),
+            ('background-color', '#0E1117')]} 
+]).format("{:.2f}")
+
+st.markdown("##### Option Greeks")
 st.dataframe(styled_df)
 st.markdown("<br>", unsafe_allow_html=True)
 
