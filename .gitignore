@@ -1,4 +1,7 @@
 data/
+tests/
+heatmaps/
+src/data_loader.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
