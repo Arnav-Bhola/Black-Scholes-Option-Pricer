@@ -37,9 +37,9 @@ with st.sidebar:
 
     current_price = st.number_input("Current Asset Price", value=100.0)
     strike = st.number_input("Strike Price", value=100.0)
-    time_to_maturity = st.number_input("Time to Maturity (Years)", value=1.0)
+    time_to_exp = st.number_input("Time to Maturity (Years)", value=1.0)
     volatility = st.number_input("Volatility (σ)", value=0.2)
-    interest_rate = st.number_input("Risk-Free Interest Rate", value=0.05)
+    risk_free_rate = st.number_input("Risk-Free Interest Rate", value=0.05)
 
     st.markdown("---")
     st.write('Heatmap Parameters')
@@ -54,8 +54,8 @@ with st.sidebar:
 option = BlackScholes(
     stock_price=current_price,
     strike_price=strike,
-    time_to_exp=time_to_maturity,
-    risk_free_rate=interest_rate,
+    time_to_exp=time_to_exp,
+    risk_free_rate=risk_free_rate,
     volatility=volatility,
     option_type=OptionType.CALL_OPTION  # or add a selectbox to choose CALL/PUT
 )
@@ -64,7 +64,7 @@ price = option.calculate_price()
 
 data = {
     "Parameter": ["Current Asset Price", "Strike Price", "Time to Maturity (Years)", "Volatility (σ)", "Risk-Free Rate", "Option Price"],
-    "Value": [current_price, strike, time_to_maturity, volatility, interest_rate, price]
+    "Value": [current_price, strike, time_to_exp, volatility, risk_free_rate, price]
 }
 
 
@@ -123,18 +123,27 @@ Below you can see the calculated option price along with **sensitivity heatmaps*
 <br><br>
 """, unsafe_allow_html=True)
 
+base_call_price = 0
+base_put_price=0
+if (not (volatility < vol_min or volatility > vol_max or current_price < stock_min or current_price > stock_max)):
+    base_call_price = BlackScholes(current_price, strike, time_to_exp, risk_free_rate, volatility, OptionType.CALL_OPTION).calculate_price()
+    base_put_price = BlackScholes(current_price, strike, time_to_exp, risk_free_rate, volatility, OptionType.PUT_OPTION).calculate_price()
+
+
 heatmap_gen = HeatmapGenerator(
     strike_price=strike,
-    time_to_exp=time_to_maturity,
-    risk_free_rate=interest_rate,
+    time_to_exp=time_to_exp,
+    risk_free_rate=risk_free_rate,
     min_stock_price=stock_min,
     max_stock_price=stock_max,
     min_volatility=vol_min,
-    max_volatility=vol_max
+    max_volatility=vol_max,
+    base_call_price=base_call_price,
+    base_put_price=base_put_price
 )
 
 heatmap_gen.compute_heatmaps()
-heatmap_gen.graph_heatmaps()
+heatmap_gen.graph_all_heatmaps()
 
 col1, col2 = st.columns(2)
 
@@ -143,3 +152,12 @@ with col1:
 
 with col2:
     st.pyplot(heatmap_gen.put_graph)
+
+if (not (volatility < vol_min or volatility > vol_max or current_price < stock_min or current_price > stock_max)) :
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.pyplot(heatmap_gen.call_pnl_graph)
+
+    with col2:
+        st.pyplot(heatmap_gen.put_pnl_graph)

@@ -4,13 +4,14 @@ import numpy as np
 from .enums import OptionType
 
 class BlackScholes():
-    def __init__(self, stock_price, strike_price, time_to_exp, risk_free_rate, volatility, option_type=OptionType.CALL_OPTION):
+    def __init__(self, stock_price, strike_price, time_to_exp, risk_free_rate, volatility, option_type=OptionType.CALL_OPTION, base_price=0):
         self.stock_price = stock_price
         self.strike_price = strike_price
         self.time_to_exp = time_to_exp
         self.risk_free_rate = risk_free_rate
         self.volatility = volatility
         self.option_type = option_type
+        self.base_price = base_price
         self.d1 = None
 
     def calculate_d1(self):
