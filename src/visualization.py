@@ -3,8 +3,9 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 import os
 import numpy as np
-from .heatmap import Heatmap
-from .enums import OptionType
+from src.heatmap import Heatmap
+from src.enums import OptionType
+
 
 # Custom red -> yellow -> green colormap for P&L style visualization
 pastel_r2g = LinearSegmentedColormap.from_list(
@@ -20,7 +21,7 @@ class HeatmapGenerator():
         time_to_exp (float): Time to expiration (in years).
         risk_free_rate (float): Annual risk-free interest rate (as a decimal).
         min_stock_price (float): Minimum stock price for grid.
-        max_stock_price (float): Maximum stock price for grid.
+        max_stock_price (float): Maximum stock price for grid.  
         min_volatility (float): Minimum volatility for grid.
         max_volatility (float): Maximum volatility for grid.
         base_call_price (float): Base price for call P&L calculations.

@@ -8,7 +8,7 @@ and their Greeks (Delta, Gamma, Vega, Theta, Rho) using the Black-Scholes formul
 import math
 from scipy.stats import norm
 import numpy as np
-from .enums import OptionType
+from src.enums import OptionType
 
 class BlackScholes():
     """
