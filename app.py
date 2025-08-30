@@ -13,7 +13,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from src.black_scholes import BlackScholes
 from src.enums import OptionType
 from src.visualization import HeatmapGenerator
